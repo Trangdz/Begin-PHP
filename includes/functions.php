@@ -68,3 +68,121 @@ function sendMail($to,$subject)
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
+function isPost(){
+    if($_SERVER['REQUEST_METHOD']=='POST'){
+        return true;
+    }
+    return false;
+}
+function isGet(){
+    if($_SERVER['REQUEST_METHOD']=='GET'){
+        return true;
+    }
+    return false;
+}
+
+//Lay gia tri phuong thuc POST, GET
+function getBody(){
+    $bodyArr=[];
+    if (!empty($_GET)) {
+        foreach ($_GET as $key => $value) {
+            $key = strip_tags($key);
+            if (is_array($value)) {
+                $bodyArr[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);
+            } else {
+                $bodyArr[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            }
+        }
+    }
+    if (isPost()) {
+        if (!empty($_POST)) {
+            foreach ($_POST as $key => $value) {
+                $key = strip_tags($key);
+                if (is_array($value)) {
+                    $bodyArr[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);
+                } else {
+                    $bodyArr[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+                }
+            }
+        }
+    }
+    return $bodyArr       ; 
+}
+
+function getRow($sql){
+    // Giả sử query là một hàm thực thi câu lệnh SQL và trả về PDOStatement
+    $statement = query($sql, [], true);
+
+    // Kiểm tra nếu truy vấn thành công và trả về một đối tượng PDOStatement
+    if ($statement instanceof PDOStatement) {
+        return $statement->rowCount(); // Trả về số lượng dòng
+    }
+
+    // Nếu không phải là PDOStatement, báo lỗi hoặc trả về 0
+    return 0; // Trả về 0 nếu truy vấn thất bại hoặc không có kết quả
+}
+
+// Kiểm tra email
+function isEmail($email) {
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+// Kiểm tra số nguyên
+function isNumberInt($number, $range = []) {
+    if (!empty($range)) {
+        $options = ['options' => $range];
+        $checkNumber = filter_var($number, FILTER_VALIDATE_INT, $options);
+    } else {
+        $checkNumber = filter_var($number, FILTER_VALIDATE_INT);
+    }
+    
+    return $checkNumber;
+}
+// Kiểm tra số thực
+function isNumberFloat($number, $range = []) {
+    if (!empty($range)) {
+        $options = ['options' => $range];
+        $checkNumber = filter_var($number, FILTER_VALIDATE_FLOAT, $options);
+    } else {
+        $checkNumber = filter_var($number, FILTER_VALIDATE_FLOAT);
+    }
+    
+    return $checkNumber;
+}
+
+//Kiem  tra so diewn thoai
+function isPhone($phone){
+    $checkFirst=false;
+    if($phone[0]=='0')
+    {
+        $checkFirst=true;
+        $phone=substr($phone,1);
+    }
+
+    $checkLast=false;
+    if(isNumberInt($phone)&&strlen(($phone)>9))
+    {
+        $checkLast=true;
+    }
+    if($checkFirst && $checkLast)
+    {
+        return true;
+    }
+    return false;
+
+}
+// Hàm tạo thông báo
+function getMsg($msg, $type = 'success') {
+    if (!empty($msg)) {
+        // Sử dụng htmlspecialchars để tránh XSS tấn công
+    
+        echo '<div style="background-color:red" class="alert alert-success">';
+        echo $msg;
+        echo '</div>';
+      
+    }
+}
+function redirect($path='index.php'){
+    header("Location: $path");
+    exit;
+}

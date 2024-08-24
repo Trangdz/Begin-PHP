@@ -5,37 +5,44 @@ if (defined('_INCODE') != 1) {
     die('Access Denied');
 }
 // Không bao giờ đạt đến dòng này vì die() đã dừng thực thi mã
-$data=[
-    'pageTitle'=>'System Login'
+$data = [
+    'pageTitle' => 'System Login'
 ];
 // $session=setSession('login','Unicode');
 // var_dump($session);
 
-$send=sendMail('trinhvantrangok123321@gmail.com','helllo');
-if($send){
-    echo "Massage email successfull";
+// $send=sendMail('trinhvantrangok123321@gmail.com','helllo');
+// if($send){
+//     echo "Massage email successfull";
+// }
+if (isPost()) {
+    $bodyArr = getBody();
+    echo '<pre>';
+    print_r($bodyArr);
+    echo '</pre>';
 }
-layout('header-login',$data);
+
+layout('header-login', $data);
 ?>
-  <div class="login-form">
-        <h2 class="title">Đăng Nhập</h2>
-        <form action="" method="post">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" class="form-control" placeholder="Nhập email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mật khẩu</label>
-                <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" required>
-            </div>
-            <button type="submit">Đăng Nhập</button>
-            <div class="link">
-                <p><a href="?module=auth&action=forgot">Quên mật khẩu?</a></p>
-                <p>Chưa có tài khoản? <a href="?module=auth&action=register">Đăng ký ngay</a></p>
-            </div>
-        </form>
-    </div>
-    <!-- <div class="registration-form">
+<div class="login-form">
+    <h2 class="title">Đăng Nhập</h2>
+    <form action="" method="post">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" placeholder="Nhập email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" required>
+        </div>
+        <button type="submit">Đăng Nhập</button>
+        <div class="link">
+            <p><a href="?module=auth&action=forgot">Quên mật khẩu?</a></p>
+            <p>Chưa có tài khoản? <a href="?module=auth&action=register">Đăng ký ngay</a></p>
+        </div>
+    </form>
+</div>
+<!-- <div class="registration-form">
         <h2 class="title">Đăng Ký</h2>
         <form action="" method="post">
             <div class="form-group">
@@ -68,4 +75,4 @@ layout('header-login',$data);
 <?php
 // Sửa dấu gạch ngược thành dấu gạch chéo trong đường dẫn
 
-layout('footer-login',$data);
+layout('footer-login', $data);
