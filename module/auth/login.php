@@ -8,7 +8,14 @@ if (defined('_INCODE') != 1) {
 $data=[
     'pageTitle'=>'System Login'
 ];
-layout('header-login');
+// $session=setSession('login','Unicode');
+// var_dump($session);
+
+$send=sendMail('trinhvantrangok123321@gmail.com','helllo');
+if($send){
+    echo "Massage email successfull";
+}
+layout('header-login',$data);
 ?>
   <div class="login-form">
         <h2 class="title">Đăng Nhập</h2>
@@ -61,4 +68,4 @@ layout('header-login');
 <?php
 // Sửa dấu gạch ngược thành dấu gạch chéo trong đường dẫn
 
-layout('footer-login');
+layout('footer-login',$data);

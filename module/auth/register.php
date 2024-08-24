@@ -46,4 +46,4 @@ layout('header-login',$data);
 <?php
 // Sửa dấu gạch ngược thành dấu gạch chéo trong đường dẫn
 
-layout('footer-login');
+layout('footer-login',$data);
