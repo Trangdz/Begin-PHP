@@ -25,8 +25,8 @@ function query($sql, $data=[]){
         }
     }
     catch(Exception $exception){
-        echo $exception->getMessage() . '<br/>';
-        echo 'File: ' . $exception->getFile() . ' - Line: ' . $exception->getLine() . '<br/>';
+        require_once 'module/error/database.php';
+        die(); // Dừng thực thi nếu có lỗi
     }
     return $query;
 }

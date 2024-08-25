@@ -28,7 +28,7 @@ function layout($layoutName = 'header', $data = [])
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-function sendMail($to,$subject)
+function sendMail($to,$subject,$content)
 {
 
     //Create an instance; passing `true` enables exceptions
@@ -57,9 +57,10 @@ function sendMail($to,$subject)
         // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
 
         //Content
-        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->isHTML(true); 
+        $mail->CharSet='UTF-8';                                 //Set email format to HTML
         $mail->Subject = $subject;
-        $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+        $mail->Body    = $content;
        // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
        return $mail->send();

@@ -76,14 +76,53 @@ if (isPost()) {
     if (empty($errors)) {
         setFlashData('msg', 'You have login successfull');
         setFlashData('msg_type', 'success');
-      
-       // redirect('?module=auth&action=login');
+        $activeToken=sha1(uniqid().time());
+        $dataInsert=[
+            'email'=>$body['email'],
+            'fullname'=>$body['fullname'],
+             'phone'=>$body['phonenumber'],
+             'password'=>password_hash($body['password'],PASSWORD_DEFAULT),
+             'activeToken'=> $activeToken,
+             'createAt' => date('Y-m-d H:i:s'),
+        ];
+        $insertStatus=insert('user',$dataInsert);
+
+
+        if ($insertStatus) {
+            // Tạo link kích hoạt
+            $linkActive = _WEB_HOST_ROOT.'/index.php/?module=auth&action=active&token=' . $activeToken;
+            
+            // Thiết lập nội dung email
+            $subject = $body['fullname'] . ' vui lòng kích hoạt tài khoản';
+            $content = 'Chào bạn: ' . $body['fullname'] . ',<br/>';
+            $content .= 'Vui lòng click vào link dưới đây để kích hoạt tài khoản:<br/>';
+            $content .= '<a href="' . $linkActive . '">' . $linkActive . '</a><br/>';
+            $content .= 'Trân trọng!';
+        
+            // Tiến hành gửi email
+            $sendStatus = sendMail($body['email'], $subject, $content);
+        
+            // Kiểm tra trạng thái gửi email
+            if ($sendStatus) {
+                setFlashData('msg', 'Đăng ký tài khoản thành công. Vui lòng kiểm tra email để kích hoạt tài khoản.');
+                setFlashData('msg_type', 'success');
+            } else {
+                setFlashData('msg', 'Hệ thống đang gặp sự cố! Vui lòng thử lại sau.');
+                setFlashData('msg_type', 'danger');
+            }
+        } else {
+            setFlashData('msg', 'Hệ thống đang gặp sự cố! Vui lòng thử lại sau.');
+            setFlashData('msg_type', 'danger');
+        }
+        
+        var_dump($insertStatus);
+    //    redirect('?module=auth&action=login');
     } else {
         setFlashData('msg', 'Please re-enter information');
         setFlashData('msg_type', 'danger');
         setFlashData('errors', $errors);
         setFlashData('content',$body);
-       // redirect('?module=auth&action=register');
+       redirect('?module=auth&action=register');
     }
     echo '<pre>';
     print_r($errors);
