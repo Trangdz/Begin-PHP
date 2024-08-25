@@ -160,7 +160,7 @@ function isPhone($phone){
     }
 
     $checkLast=false;
-    if(isNumberInt($phone)&&strlen(($phone)>9))
+    if(isNumberInt($phone)&&strlen(($phone)>6))
     {
         $checkLast=true;
     }

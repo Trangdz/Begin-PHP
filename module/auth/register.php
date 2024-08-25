@@ -73,23 +73,27 @@ if (isPost()) {
         }
     }
 
-    if(empty($errors)){
-        setFlashData('msg','You have login successfull');
-        setFlashData('msg_type','success');
-    }
-    else{
-        setFlashData('msg','Please re-enter information');
-        setFlashData('msg_type','danger');
+    if (empty($errors)) {
+        setFlashData('msg', 'You have login successfull');
+        setFlashData('msg_type', 'success');
+      
+       // redirect('?module=auth&action=login');
+    } else {
+        setFlashData('msg', 'Please re-enter information');
+        setFlashData('msg_type', 'danger');
+        setFlashData('errors', $errors);
+        setFlashData('content',$body);
+       // redirect('?module=auth&action=register');
     }
     echo '<pre>';
     print_r($errors);
     echo '</pre>';
-  
 }
 
-$msg=getFlashData('msg');
-$msg_type=getFlashData('msg_type');
-
+$msg = getFlashData('msg');
+$msg_type = getFlashData('msg_type');
+$msg_error = getFlashData('errors');
+$content=getFlashData('content');
 
 ?>
 
@@ -97,30 +101,45 @@ $msg_type=getFlashData('msg_type');
 <div class="login-form">
     <h2 class="title">Đăng Nhập</h2>
     <?php
-       
-            getMsg($msg,$msg_type);
-        
+
+    getMsg($msg, $msg_type);
+
     ?>
     <form action="" method="post">
         <div class="form-group">
             <label for="fullname">Full name</label>
-            <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Full name" required>
+            <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Full name" required  value=<?php echo empty($content['fullname']) || !empty($errors['fullname']) ? '' : $content['fullname']; ?>> 
+            <?php
+        echo (!empty($errors['fullname'])) ? '<span class="errors">' . reset($errors['fullname']) . '</span>' : '';
+            ?>
         </div>
         <div class="form-group">
             <label for="Phone number">Phone number</label>
-            <input type="text" name="phonenumber" id="phonenumber" class="form-control" placeholder="Phone number" required>
+            <input type="text" name="phonenumber" id="phonenumber" class="form-control" placeholder="Phone number" required value= <?php echo empty($content['phonenumber'])||!empty($errors['phonenumber'])?'':$content['phonenumber']; ?>>
+            <?php
+        echo (!empty($errors['phonenumber'])) ? '<span class="errors">' . reset($errors['phonenumber']) . '</span>' : '';
+            ?>
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" name="email" id="email" class="form-control" placeholder="Email" required>
+            <input type="text" name="email" id="email" class="form-control" placeholder="Email" required      value=<?php echo empty($content['email']) || !empty($errors['email']) ? '' : $content['email']; ?>>
+            <?php
+            echo (!empty($errors['email'])) ? '<span class="errors">' . reset($errors['email']) . '</span>' : '';
+            ?>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required  value=<?php echo empty($content['password']) || !empty($errors['password']) ? '' : $content['password']; ?>>
+            <?php
+            echo (!empty($errors['password'])) ? '<span class="errors">' . reset($errors['password']) . '</span>' : '';
+            ?>
         </div>
         <div class="form-group">
             <label for="confirmpassword">Comfirm password</label>
-            <input type="password" name="confirmpassword" id="confirmpassword" class="form-control" placeholder="Comfirm password" required>
+            <input type="password" name="confirmpassword" id="confirmpassword" class="form-control" placeholder="Comfirm password" required  value=<?php echo empty($content['confirmpassword']) || !empty($errors['confirmpassword']) ? '' : $content['confirmpassword']; ?>>
+            <?php
+            echo (!empty($errors['confirmpassword'])) ? '<span class="errors">' . reset($errors['confirmpassword']) . '</span>' : '';
+            ?>
         </div>
         <button type="submit">Sign In </button>
         <div class="link">

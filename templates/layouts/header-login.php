@@ -10,7 +10,7 @@
     <title> <?php echo !empty($data['pageTitle'])?$data['pageTitle']:'Unicode'?></title>
     <link text="text/css" rel="stylesheet" href="<?php echo _WEB_HOST_TEMPLATE;?>/css/bootrap.min.css"/>
     <link text="text/css"  rel="stylesheet" href="<?php echo _WEB_HOST_TEMPLATE;?>/css/font-awesome.min.css">
-    <link text="text/css"  rel="stylesheet" href="<?php echo _WEB_HOST_TEMPLATE;?>/css/style.css">
+    <link text="text/css"  rel="stylesheet" href="<?php echo _WEB_HOST_TEMPLATE;?>/css/style.css?ver=<?php echo rand(); ?>">
     <style>
         body {
             background-color: #f0f2f5;
