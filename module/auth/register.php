@@ -76,32 +76,32 @@ if (isPost()) {
     if (empty($errors)) {
         setFlashData('msg', 'You have login successfull');
         setFlashData('msg_type', 'success');
-        $activeToken=sha1(uniqid().time());
-        $dataInsert=[
-            'email'=>$body['email'],
-            'fullname'=>$body['fullname'],
-             'phone'=>$body['phonenumber'],
-             'password'=>password_hash($body['password'],PASSWORD_DEFAULT),
-             'activeToken'=> $activeToken,
-             'createAt' => date('Y-m-d H:i:s'),
+        $activeToken = sha1(uniqid() . time());
+        $dataInsert = [
+            'email' => $body['email'],
+            'fullname' => $body['fullname'],
+            'phone' => $body['phonenumber'],
+            'password' => password_hash($body['password'], PASSWORD_DEFAULT),
+            'activeToken' => $activeToken,
+            'createAt' => date('Y-m-d H:i:s'),
         ];
-        $insertStatus=insert('user',$dataInsert);
+        $insertStatus = insert('user', $dataInsert);
 
 
         if ($insertStatus) {
             // Tạo link kích hoạt
-            $linkActive = _WEB_HOST_ROOT.'/index.php/?module=auth&action=active&token=' . $activeToken;
-            
+            $linkActive = _WEB_HOST_ROOT.'/index.php?module=auth&action=active&token='. $activeToken;
+
             // Thiết lập nội dung email
             $subject = $body['fullname'] . ' vui lòng kích hoạt tài khoản';
             $content = 'Chào bạn: ' . $body['fullname'] . ',<br/>';
             $content .= 'Vui lòng click vào link dưới đây để kích hoạt tài khoản:<br/>';
             $content .= '<a href="' . $linkActive . '">' . $linkActive . '</a><br/>';
             $content .= 'Trân trọng!';
-        
+
             // Tiến hành gửi email
             $sendStatus = sendMail($body['email'], $subject, $content);
-        
+
             // Kiểm tra trạng thái gửi email
             if ($sendStatus) {
                 setFlashData('msg', 'Đăng ký tài khoản thành công. Vui lòng kiểm tra email để kích hoạt tài khoản.');
@@ -114,15 +114,15 @@ if (isPost()) {
             setFlashData('msg', 'Hệ thống đang gặp sự cố! Vui lòng thử lại sau.');
             setFlashData('msg_type', 'danger');
         }
-        
+
         var_dump($insertStatus);
-    //    redirect('?module=auth&action=login');
+        //    redirect('?module=auth&action=login');
     } else {
         setFlashData('msg', 'Please re-enter information');
         setFlashData('msg_type', 'danger');
         setFlashData('errors', $errors);
-        setFlashData('content',$body);
-       redirect('?module=auth&action=register');
+        setFlashData('content', $body);
+        redirect('?module=auth&action=register');
     }
     echo '<pre>';
     print_r($errors);
@@ -132,7 +132,7 @@ if (isPost()) {
 $msg = getFlashData('msg');
 $msg_type = getFlashData('msg_type');
 $msg_error = getFlashData('errors');
-$content=getFlashData('content');
+$content = getFlashData('content');
 
 ?>
 
@@ -147,35 +147,35 @@ $content=getFlashData('content');
     <form action="" method="post">
         <div class="form-group">
             <label for="fullname">Full name</label>
-            <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Full name" required  value=<?php echo empty($content['fullname']) || !empty($errors['fullname']) ? '' : $content['fullname']; ?>> 
+            <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Full name" required value=<?php echo empty($content['fullname']) || !empty($errors['fullname']) ? '' : $content['fullname']; ?>>
             <?php
-        echo (!empty($errors['fullname'])) ? '<span class="errors">' . reset($errors['fullname']) . '</span>' : '';
+            echo (!empty($errors['fullname'])) ? '<span class="errors">' . reset($errors['fullname']) . '</span>' : '';
             ?>
         </div>
         <div class="form-group">
             <label for="Phone number">Phone number</label>
-            <input type="text" name="phonenumber" id="phonenumber" class="form-control" placeholder="Phone number" required value= <?php echo empty($content['phonenumber'])||!empty($errors['phonenumber'])?'':$content['phonenumber']; ?>>
+            <input type="text" name="phonenumber" id="phonenumber" class="form-control" placeholder="Phone number" required value=<?php echo empty($content['phonenumber']) || !empty($errors['phonenumber']) ? '' : $content['phonenumber']; ?>>
             <?php
-        echo (!empty($errors['phonenumber'])) ? '<span class="errors">' . reset($errors['phonenumber']) . '</span>' : '';
+            echo (!empty($errors['phonenumber'])) ? '<span class="errors">' . reset($errors['phonenumber']) . '</span>' : '';
             ?>
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" name="email" id="email" class="form-control" placeholder="Email" required      value=<?php echo empty($content['email']) || !empty($errors['email']) ? '' : $content['email']; ?>>
+            <input type="text" name="email" id="email" class="form-control" placeholder="Email" required value=<?php echo empty($content['email']) || !empty($errors['email']) ? '' : $content['email']; ?>>
             <?php
             echo (!empty($errors['email'])) ? '<span class="errors">' . reset($errors['email']) . '</span>' : '';
             ?>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required  value=<?php echo empty($content['password']) || !empty($errors['password']) ? '' : $content['password']; ?>>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required value=<?php echo empty($content['password']) || !empty($errors['password']) ? '' : $content['password']; ?>>
             <?php
             echo (!empty($errors['password'])) ? '<span class="errors">' . reset($errors['password']) . '</span>' : '';
             ?>
         </div>
         <div class="form-group">
             <label for="confirmpassword">Comfirm password</label>
-            <input type="password" name="confirmpassword" id="confirmpassword" class="form-control" placeholder="Comfirm password" required  value=<?php echo empty($content['confirmpassword']) || !empty($errors['confirmpassword']) ? '' : $content['confirmpassword']; ?>>
+            <input type="password" name="confirmpassword" id="confirmpassword" class="form-control" placeholder="Comfirm password" required value=<?php echo empty($content['confirmpassword']) || !empty($errors['confirmpassword']) ? '' : $content['confirmpassword']; ?>>
             <?php
             echo (!empty($errors['confirmpassword'])) ? '<span class="errors">' . reset($errors['confirmpassword']) . '</span>' : '';
             ?>

@@ -1,7 +1,8 @@
-<!-- <?php 
-//  if(defined('_INCODE')) die('Access deined');
+<!-- <?php
+        //  if(defined('_INCODE')) die('Access deined');
 
-// ?> 
+        // 
+        ?> 
 <div>
     <p> ?php>echo $exception->getMessage(); ?></p>
     <p> ?php  echo $exception->getFile(); ?>
@@ -12,25 +13,28 @@
 // Kiểm tra hằng số bảo mật _INCODE
 if (!defined('_INCODE')) die('Access Denied...');
 
-function query($sql, $data=[]){
+function query($sql, $data = [])
+{
     global $conn;
     $query=false;
-    try{
-        $statement=$conn->prepare(($sql));
-        if(empty($data)){
-            $query=$statement->execute();
+    try {
+        $statement = $conn->prepare(($sql));
+        if (empty($data)) {
+            $query = $statement->execute();
+        } else {
+            $query = $statement->execute($data);
         }
-        else{
-            $query=$statement->execute($data);
-        }
-    }
-    catch(Exception $exception){
+    } catch (Exception $exception) {
         require_once 'module/error/database.php';
         die(); // Dừng thực thi nếu có lỗi
     }
-    return $query;
+    if($query){
+        return $statement;
+    }
+    return  $query;
 }
-function insert($table, $dataInsert) {
+function insert($table, $dataInsert)
+{
     $keyArr = array_keys($dataInsert);
     $fieldStr = implode(', ', $keyArr);
     $valueStr = ':' . implode(', :', $keyArr);
@@ -40,7 +44,8 @@ function insert($table, $dataInsert) {
     return query($sql, $dataInsert);
 }
 
-function update($table, $dataUpdate, $condition = '') {
+function update($table, $dataUpdate, $condition = '')
+{
     $updateStr = '';
     foreach ($dataUpdate as $key => $value) {
         $updateStr .= $key . '=:' . $key . ', ';
@@ -57,7 +62,8 @@ function update($table, $dataUpdate, $condition = '') {
     return query($sql, $dataUpdate);
 }
 
-function delete($table, $condition = '') {
+function delete($table, $condition = '')
+{
     if (!empty($condition)) {
         $sql = "DELETE FROM $table WHERE $condition";
     } else {
@@ -78,17 +84,46 @@ function getRaw($sql) {
     return false;
 }
 // Lấy dữ liệu từ câu lệnh SQL - Lấy 1 bản ghi
-function firstRaw($sql) {
-    $statement = query($sql, [], true);
-    if (is_object($statement)) {
+function firstRaw($sql)
+{
+    $statement = query($sql, []);
+    if(is_object($statement))
+    {
         $dataFetch = $statement->fetch(PDO::FETCH_ASSOC);
         return $dataFetch;
-    }
-
+    };
     return false;
 }
+// function firstRaw($sql) {
+//     // Execute the query using the query function
+//     // Chuẩn bị câu lệnh truy vấn
+//     global $conn;
+//     $stmt = $conn->prepare($sql);
 
-function get($table, $field = '*', $condition = '') {
+//     // Gán giá trị cho tham số :id
+//     // $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+//     // $id = 14;
+
+//     // Thực thi câu lệnh truy vấn
+//     $stmt->execute();
+
+//     // Lấy kết quả
+//     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+//     // Kiểm tra và hiển thị kết quả
+//     if ($result) {
+//         // echo "ID: " . $result['id'] . "<br>";
+//         // echo "Name: " . $result['fullname'] . "<br>";
+//         // echo "Email: " . $result['email'] . "<br>";
+
+//         return $result;
+//     } else {
+//         return false;
+//     }
+// }
+
+function get($table, $field = '*', $condition = '')
+{
     $sql = 'SELECT ' . $field . ' FROM ' . $table;
     if (!empty($condition)) {
         $sql .= ' WHERE ' . $condition;
@@ -97,7 +132,8 @@ function get($table, $field = '*', $condition = '') {
     return getRaw($sql);
 }
 
-function first($table, $field = '*', $condition = '') {
+function first($table, $field = '*', $condition = '')
+{
     $sql = 'SELECT ' . $field . ' FROM ' . $table;
     if (!empty($condition)) {
         $sql .= ' WHERE ' . $condition;
