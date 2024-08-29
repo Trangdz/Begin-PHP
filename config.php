@@ -6,7 +6,7 @@ const _ACTION_DEFAULT = 'lists';
 const _INCODE = true;
 
 // Establish host
-define('_WEB_HOST_ROOT', 'http://' . $_SERVER['HTTP_HOST'] . '/PHP/user_manager');
+define('_WEB_HOST_ROOT', 'http://' . $_SERVER['HTTP_HOST'] . '/PHP/user_manager/index.php');
 define('_WEB_HOST_TEMPLATE', _WEB_HOST_ROOT.'/ module/templates');
 
 // Establish paths

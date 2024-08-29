@@ -44,11 +44,31 @@ function insert($table, $dataInsert)
     return query($sql, $dataInsert);
 }
 
+// function update($table, $dataUpdate, $condition = '')
+// {
+//     $updateStr = '';
+//     foreach ($dataUpdate as $key => $value) {
+//         $updateStr .= $key . '=:' . $key . ', ';
+//     }
+
+//     $updateStr = rtrim($updateStr, ', ');
+
+//     if (!empty($condition)) {
+//         $sql = 'UPDATE ' . $table . ' SET ' . $updateStr . ' WHERE ' . $condition;
+//     } else {
+//         $sql = 'UPDATE ' . $table . ' SET ' . $updateStr;
+//     }
+
+//     return query($sql, $dataUpdate);
+// }
 function update($table, $dataUpdate, $condition = '')
 {
     $updateStr = '';
+    $params = [];
+    
     foreach ($dataUpdate as $key => $value) {
         $updateStr .= $key . '=:' . $key . ', ';
+        $params[':' . $key] = $value;
     }
 
     $updateStr = rtrim($updateStr, ', ');
@@ -59,7 +79,7 @@ function update($table, $dataUpdate, $condition = '')
         $sql = 'UPDATE ' . $table . ' SET ' . $updateStr;
     }
 
-    return query($sql, $dataUpdate);
+    return query($sql, $params);
 }
 
 function delete($table, $condition = '')

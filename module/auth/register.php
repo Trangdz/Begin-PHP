@@ -90,17 +90,16 @@ if (isPost()) {
 
         if ($insertStatus) {
             // Tạo link kích hoạt
-            $linkActive = _WEB_HOST_ROOT.'/index.php?module=auth&action=active&token='. $activeToken;
+            $linkActive = _WEB_HOST_ROOT.'?module=auth&action=active&token='. $activeToken;
 
             // Thiết lập nội dung email
             $subject = $body['fullname'] . ' vui lòng kích hoạt tài khoản';
             $content = 'Chào bạn: ' . $body['fullname'] . ',<br/>';
-            $content .= 'Vui lòng click vào link dưới đây để kích hoạt tài khoản:<br/>';
-            $content .= '<a href="' . $linkActive . '">' . $linkActive . '</a><br/>';
+            $content .= 'Vui lòng click vào link dưới đây để kích hoạt tài khoản:'. $linkActive ;
             $content .= 'Trân trọng!';
 
             // Tiến hành gửi email
-            $sendStatus = sendMail($body['email'], $subject, $content);
+            $sendStatus = sendMail($body['email'], $content, $subject);
 
             // Kiểm tra trạng thái gửi email
             if ($sendStatus) {
@@ -122,11 +121,13 @@ if (isPost()) {
         setFlashData('msg_type', 'danger');
         setFlashData('errors', $errors);
         setFlashData('content', $body);
-        redirect('?module=auth&action=register');
+        // redirect('?module=auth&action=register');
     }
-    echo '<pre>';
-    print_r($errors);
-    echo '</pre>';
+    // echo '<pre>';
+    // print_r($errors);
+    // echo '</pre>';
+
+   
 }
 
 $msg = getFlashData('msg');

@@ -8,91 +8,77 @@ if (defined('_INCODE') != 1) {
 $data = [
     'pageTitle' => 'System Login'
 ];
-// $session=setSession('login','Unicode');
-// var_dump($session);
 
-// $send=sendMail('trinhvantrangok123321@gmail.com','helllo');
-// if($send){
-//     echo "Massage email successfull";
-// }
 
 //Check status login
-// if(getSession('loginToken'))
-// {
-//     $tokenLogin=getSession('loginToken');
-//     $queryToken=firstRaw("SELECT userId FROM login_token WHERE token='$tokenLogin'");
-//     if(!empty($queryToken))
-//     {
-//         redirect('?module=users');
-//     }
-//     else
-//     {
+// $checkLogin=false;
+// if (getSession('loginToken')) {
+//     $tokenLogin = getSession('loginToken');
+//     $queryToken = firstRaw("SELECT userId FROM login_token WHERE token='$tokenLogin'");
+//     if (!empty($queryToken)) {
+//         $checkLogin=true;
+//     } else {
 //         removeSession('loginToken');
 //     }
 // }
-// if (isPost()) {
-//     $body = getBody();
-//     if(!empty($body['email'])&& !empty(trim($body['password']))){
-//         //Check login
-//         $email=$body['email'];
-//         $password=$body['password'];
-//         //Query take inform fllowing email
-//         $userQuery =firstRaw("SELECT id, password FROM user WHERE email ='email'");
-//         if(!empty($userQuery))
-//         {
-//             $passwordHash=$userQuery['password'];
-//             $userId=$userQuery['id'];
-//             if(password_verify($password,$passwordHash))
-//             {
-//                 //Create token login
-//                 $tokenLogin=sha1(uniqid().time());
+if (isLogin()) {
+    redirect('?module=users');
+}
+if (isPost()) {
+    $body = getBody();
+    if (!empty($body['email']) && !empty(trim($body['password']))) {
+        //Check login
+        $email = $body['email'];
+        $password = $body['password'];
+        //Query take inform fllowing email
+        $userQuery = firstRaw("SELECT id, password FROM user WHERE email ='email'");
+        if (!empty($userQuery)) {
+            $passwordHash = $userQuery['password'];
+            $userId = $userQuery['id'];
+            if (password_verify($password, $passwordHash)) {
+                //Create token login
+                $tokenLogin = sha1(uniqid() . time());
 
-//                 //Insert data into table
-//                 $dataToken=[
-//                     'userId' => $userId,
-//                     'token' => $tokenLogin,
-//                     'createAt'=> date('Y-m-d H:i:s') 
-//                 ];
-//                 $insertTokenStatus=insert('login_token',$dataToken);
-//                 if($insertTokenStatus)
-//                 {
-//                     //Isert token success
+                //Insert data into table
+                $dataToken = [
+                    'userId' => $userId,
+                    'token' => $tokenLogin,
+                    'createAt' => date('Y-m-d H:i:s')
+                ];
+                $insertTokenStatus = insert('login_token', $dataToken);
+                if ($insertTokenStatus) {
+                    //Isert token success
 
-//                     //Save token_login into session
-//                     setSession('loginToken',$tokenLogin);
+                    //Save token_login into session
+                    setSession('loginToken', $tokenLogin);
 
-//                     //Redirection across manager page
-//                     redirect('?module=users');
-
-//                 }
-//                 else{
-//                     setFlashData('msg',"Errors system , You can't login");
-//                     setFlashData('msg_type','danger');
-//                 }
-
-
-//             }
-//             else{
-//                 setFlashData('msg',"Password no correct");
-//                 setFlashData('msg_type','danger');
-//             }
-
-//         }
-//         else{
-//             setFlashData('msg',"Please , re-enter email and password");
-//             setFlashData('msg_type','danger');
-//         }
-//     }
-//     redirect('?module=auth&action=login');
-   
-// }
+                    //Redirection across manager page
+                    redirect('?module=users');
+                } else {
+                    setFlashData('msg', "Errors system , You can't login");
+                    setFlashData('msg_type', 'danger');
+                }
+            } else {
+                setFlashData('msg', "Password no correct");
+                setFlashData('msg_type', 'danger');
+            }
+        } else {
+            setFlashData('msg', "Please , re-enter email and password");
+            setFlashData('msg_type', 'danger');
+        }
+    }
+    redirect('?module=users&action=list');
+}
 
 layout('header-login', $data);
-$msg=getFlashData('msg');
-$msg
+$msg = getFlashData('msg');
+$msg_type = getFlashData('msg_type');
 ?>
 <div class="login-form">
     <h2 class="title">Đăng Nhập</h2>
+    <?php
+    getMsg($msg, $msg_type);
+    ?>
     <form action="" method="post">
         <div class="form-group">
             <label for="email">Email</label>

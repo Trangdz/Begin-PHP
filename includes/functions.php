@@ -46,7 +46,7 @@ function sendMail($to,$subject,$content)
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('trinhtrangat18actvn@gmail.com', 'Mailer');
+        $mail->setFrom('trangchunghaha15@gmail.com', 'Mailer');
         $mail->addAddress($to);     //Add a recipient
       //  $mail->addReplyTo();
         $mail->addCC('cc@example.com');
@@ -70,13 +70,13 @@ function sendMail($to,$subject,$content)
     }
 }
 function isPost(){
-    if($_SERVER['REQUEST_METHOD']=='POST'){
+    if($_SERVER['REQUEST_METHOD']==='POST'){
         return true;
     }
     return false;
 }
 function isGet(){
-    if($_SERVER['REQUEST_METHOD']=='GET'){
+    if($_SERVER['REQUEST_METHOD']==='GET'){
         return true;
     }
     return false;
@@ -186,4 +186,21 @@ function getMsg($msg, $type = 'success') {
 function redirect($path='index.php'){
     header("Location: $path");
     exit;
+}
+// Kiểm tra trạng thái đăng nhập
+function isLogin() {
+    $checkLogin = false;
+    $tokenLogin = getSession('loginToken');
+    
+    if ($tokenLogin) {
+        $queryToken = firstRaw("SELECT userId FROM login_token WHERE token = '$tokenLogin'");
+        
+        if (!empty($queryToken)) {
+            $checkLogin = true;
+        } else {
+            removeSession('loginToken');
+        }
+    }
+
+    return $checkLogin;
 }
