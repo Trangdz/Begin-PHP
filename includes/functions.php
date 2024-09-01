@@ -185,7 +185,7 @@ function getMsg($msg, $type = 'success') {
 }
 function redirect($path='index.php'){
     header("Location: $path");
-    exit;
+    exit();
 }
 // Kiểm tra trạng thái đăng nhập
 function isLogin() {

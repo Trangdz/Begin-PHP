@@ -10,31 +10,27 @@ $data = [
 ];
 
 
-//Check status login
-// $checkLogin=false;
-// if (getSession('loginToken')) {
-//     $tokenLogin = getSession('loginToken');
-//     $queryToken = firstRaw("SELECT userId FROM login_token WHERE token='$tokenLogin'");
-//     if (!empty($queryToken)) {
-//         $checkLogin=true;
-//     } else {
-//         removeSession('loginToken');
-//     }
-// }
+
 if (isLogin()) {
-    redirect('?module=users');
+    // redirect('?module=users');
 }
 if (isPost()) {
     $body = getBody();
-    if (!empty($body['email']) && !empty(trim($body['password']))) {
+    $email=$body['email'];
+    $password=$body['password'];
+    echo "hahah";
+    if (!empty($email) && !empty($password)) {
         //Check login
-        $email = $body['email'];
-        $password = $body['password'];
+        echo "hahah0";
+       
         //Query take inform fllowing email
-        $userQuery = firstRaw("SELECT id, password FROM user WHERE email ='email'");
+        $userQuery = firstRaw("SELECT id, password FROM user WHERE email ='$email'");
+
+         var_dump($userQuery);
         if (!empty($userQuery)) {
             $passwordHash = $userQuery['password'];
             $userId = $userQuery['id'];
+            echo "hahah1";
             if (password_verify($password, $passwordHash)) {
                 //Create token login
                 $tokenLogin = sha1(uniqid() . time());
@@ -45,15 +41,20 @@ if (isPost()) {
                     'token' => $tokenLogin,
                     'createAt' => date('Y-m-d H:i:s')
                 ];
+                echo "hahah2";
                 $insertTokenStatus = insert('login_token', $dataToken);
+                echo "Day la insert data :";
+                var_dump($insertTokenStatus);
                 if ($insertTokenStatus) {
                     //Isert token success
 
                     //Save token_login into session
-                    setSession('loginToken', $tokenLogin);
-
+                    // setSession('loginToken', $tokenLogin);
+                    $_SESSION['loginToken']=$tokenLogin;
                     //Redirection across manager page
-                    redirect('?module=users');
+                   redirect('?module=users&action=list');
+                   echo $_SESSION['loginToken'];
+                   echo "Da co session";
                 } else {
                     setFlashData('msg', "Errors system , You can't login");
                     setFlashData('msg_type', 'danger');
@@ -67,7 +68,7 @@ if (isPost()) {
             setFlashData('msg_type', 'danger');
         }
     }
-    redirect('?module=users&action=list');
+     redirect('?module=users&action=login');
 }
 
 layout('header-login', $data);
@@ -82,11 +83,11 @@ $msg_type = getFlashData('msg_type');
     <form action="" method="post">
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" placeholder="Nhập email" required>
+            <input type="email" id="email" name ='email' class="form-control" placeholder="Nhập email" required>
         </div>
         <div class="form-group">
             <label for="password">Mật khẩu</label>
-            <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" required>
+            <input type="password" id="password" name='password' class="form-control" placeholder="Nhập mật khẩu" required>
         </div>
         <button type="submit">Đăng Nhập</button>
         <div class="link">

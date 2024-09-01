@@ -3,9 +3,9 @@ if(defined("_INCODE")!=1) die("Access denail");
 function setSession($key,$value){
     if(!empty(session_id())){
      $_SESSION[$key]=$value;
-     return true;
+  
     }
-    return false;
+ 
 }
 
 // Hàm đọc session

@@ -1,5 +1,7 @@
 <?php
 session_start();
+?>
+<?php
 require_once 'config.php';
 require_once 'includes/phpmailer/PHPMailer.php';
 require_once 'includes/phpmailer/SMTP.php';
