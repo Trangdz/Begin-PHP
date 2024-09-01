@@ -1,4 +1,66 @@
-.errors{
-    color:green;
+.errors {
+    color: green;
     font-size: 20px;
+}
+
+/* CSS for Navbar */
+/* CSS for Navbar */
+/* CSS for Navbar */
+body {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.navb ar {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: #5a5a5a;
+    font-size: 1rem;
+    padding: 10px 15px;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+    border-radius: 5px;
+}
+
+.navbar-nav .dropdown-menu {
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%2870, 70, 70, 0.7%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.navbar-light .navbar-nav .nav-link.disabled {
+    color: rgba(90, 90, 90, 0.5);
+}
+
+/* Align profile dropdown to the right */
+.navbar-nav.ml-auto {
+    margin-left: auto;
+}
+
+.collapse .navbar-collapse {
+    position: absolute;
+}
+
+.profile {
+    position: absolute;
+    left: 900px;
+
 }

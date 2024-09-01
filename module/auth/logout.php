@@ -4,42 +4,13 @@
 if (defined('_INCODE') != 1) {
     die('Access Denied');
 }
-// Không bao giờ đạt đến dòng này vì die() đã dừng thực thi mã
 
-layout('header-login');
-?>
-  
-    <div class="registration-form">
-        <h2 class="title">Đăng Ký</h2>
-        <form action="" method="post">
-            <div class="form-group">
-                <label for="name">Họ và tên</label>
-                <br/>
-                <input type="text" id="name" class="form-control" placeholder="Nhập họ và tên" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <br/>
-                <input type="email" id="email" class="form-control" placeholder="Nhập email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mật khẩu</label>
-                <br/>
-                <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Nhập lại mật khẩu</label>
-                <br/>
-                <input type="password" id="confirm-password" class="form-control" placeholder="Nhập lại mật khẩu" required>
-            </div>
-            <button type="submit">Đăng Ký</button>
-            <div class="link">
-                <p><a href="?module=auth&action=login">Đăng nhập tại đây</a></p>
-                <p><a href="?module=auth&action=forgot">Forgot pass</a></p>
-            </div>
-        </form>
-    </div>
-<?php
-// Sửa dấu gạch ngược thành dấu gạch chéo trong đường dẫn
-
-layout('footer-login');
+if(isLogin())
+{
+    echo"jjaj";
+    $token=getSession('loginToken');
+    delete('login_token',"token='$token'");
+    removeSession('loginToken');
+    redirect('?module=auth&action=login');
+}
+echo "kkk";

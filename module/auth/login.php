@@ -80,7 +80,7 @@ $msg_type = getFlashData('msg_type');
     <?php
     getMsg($msg, $msg_type);
     ?>
-    <form action="" method="post">
+    <form action="" method="post" >
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name ='email' class="form-control" placeholder="Nhập email" required>
