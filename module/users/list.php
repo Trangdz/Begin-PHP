@@ -80,7 +80,7 @@ if (isLogin()) {
         $queryString = '&' . $queryString;
     }
 
-    echo $queryString;
+    
     $msg = getFlashData('msg');
     $msg_type = getFlashData('msg_type');
 
@@ -93,7 +93,7 @@ if (isLogin()) {
         ?>
         <a href="?module=users&action=add" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>
             Add user</a>
-        <
+        
             <div class="tool-search">
             <form action="" method="get">
                 <div class="row">
@@ -146,8 +146,9 @@ if (isLogin()) {
                         <td><?php echo $item['phone']; ?></td>
                         <td><?php echo $item['status'] == 1 ? '<button type="submit" class="btn btn-success btn-sm" style="padding-left:11px; padding-right:11px">Active</button>' : '<button type="submit" class="btn btn-warning btn-sm">Passive</button>'; ?></td>
                         <td><a href=<?php echo _WEB_HOST_ROOT . '?module=users&action=edit&id=' . $item['id'] ?> class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a></td>
-                        <td><a href="#" onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a></td>
+                        <td><a href=<?php echo _WEB_HOST_ROOT . '?module=users&action=delete&id=' . $item['id'] ?>   onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a></td>
                     </tr>
+                    
                 <?php endforeach; ?>
             <?php else : ?>
                 <tr>
