@@ -7,8 +7,8 @@
 /* CSS for Navbar */
 /* CSS for Navbar */
 body {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
 .navb ar {
@@ -61,6 +61,16 @@ body {
 
 .profile {
     position: absolute;
-    left: 900px;
+    left: 850px;
 
 }
+.tool-bar{
+    border-radius: 10px;
+    padding: 10px;
+   
+}
+.tool-search{
+    padding: 15px;
+}
+
+/* FILE ADD USER */

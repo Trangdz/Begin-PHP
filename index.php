@@ -27,6 +27,10 @@ $action='_ACTION_DEFAULT';
       $action=trim($_GET['action']);
    }
  } 
+ if(empty($_GET['action']))
+ {
+  $action='list';
+ }
  $path='module/'.$module.'/'.$action.'.php';
 if(file_exists($path))
 {

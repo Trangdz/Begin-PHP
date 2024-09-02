@@ -177,7 +177,7 @@ function getMsg($msg, $type = 'success') {
     if (!empty($msg)) {
         // Sử dụng htmlspecialchars để tránh XSS tấn công
     
-        echo '<div style="background-color:green" class="alert alert-'.$type.'">';
+        echo '<div  class="alert alert-'.$type.'">';
         echo $msg;
         echo '</div>';
       

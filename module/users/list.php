@@ -9,8 +9,42 @@ if (!isLogin()) {
     redirect('?module=auth&action=login');
 }
 if (isLogin()) {
+    $filter = '';
+
+    if (isGet()) {
+        $body = getBody();
+    
+        // Xử lý lọc status
+        if (!empty($body['status'])) {
+            $status = $body['status'];
+    
+            // Điều kiện để xác định giá trị statusSql
+            $statusSql = ($status == 2) ? 0 : $status;
+            if (str_contains($filter, 'WHERE')) {
+                $filter .= " AND status = $statusSql";
+            } else {
+                // Gán điều kiện vào biến filter
+                $filter .= "WHERE status = $statusSql";
+            }
+        }
+    
+      
+    
+        if (!empty($body['keyword'])) {
+            $keyword = $body['keyword'];
+            if (str_contains($filter, 'WHERE') === false) {
+                $filter .= " WHERE fullname LIKE '%$keyword%'";
+            } else {
+                $filter .= " AND fullname LIKE '%$keyword%'";
+            }
+        }
+    }
+
+
+
+
     //Process division page
-    $allUserNumber = getRow('SELECT id FROM user');
+    $allUserNumber = getRow("SELECT id FROM user $filter ");
 
     //Identify records on a page
     $perPage = 2;
@@ -28,18 +62,60 @@ if (isLogin()) {
     } else {
         $page = 1;
     }
-    echo $page;
 
+    $flag = 1;
     $offset = ($page - 1) * $perPage;
     //Use LIMIT to take number user conform
-    $listAllUser = getRaw("SELECT * FROM user ORDER BY updateAt LIMIT $offset,$perPage");
+    $listAllUser = getRaw("SELECT * FROM user $filter ORDER BY createAt DESC LIMIT $offset, $perPage");
+
     layout('header');
+
+    $queryString = null;
+
+    if (!empty($_SERVER['QUERY_STRING'])) {
+        $queryString = $_SERVER['QUERY_STRING'];
+        $queryString = str_replace('module=users', '', $queryString);
+        $queryString = str_replace('page='.$page, '', $queryString);
+        $queryString = trim($queryString, '&');
+        $queryString = '&' . $queryString;
+    }
+    
+    echo $queryString;
+    
+    
 ?>
     <div class="container">
         <hr />
         <h3>Quản lý người dùng</h3>
-        <a class="btn btn-success btn-sm"><i class="fa fa-plus"></i>
+        <a href="?module=users&action=add" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>
             Add user</a>
+
+        <div class="tool-search">
+            <form action="" method="get">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <select name="status" class="form-control">
+                                <option value="0">Chọn trạng thái</option>
+                                <option value="1" <?php echo (!empty($status) && $status == 1) ? 'selected' : ''; ?>>Kích hoạt</option>
+                                <option value="2" <?php echo (!empty($status) && $status == 2) ? 'selected' : ''; ?>>Chưa kích hoạt</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <input type="search" class="form-control" name="keyword" placeholder="Từ khoá tìm kiếm...">
+                    </div>
+
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-primary btn-block">Tìm kiếm</button>
+                    </div>
+                </div>
+
+                <input type="hidden" name="module" value="users">
+            </form>
+        </div>
+
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -87,15 +163,27 @@ if (isLogin()) {
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <?php
+
                 if ($page > 1) {
                     $prevPage = $page - 1;
-                    echo '<li class="page-item"><a class="page-link" href="'._WEB_HOST_ROOT.'?module=users&action=list&page=' . $prevPage . '">Trước</a></li>';
+                    echo '<li class="page-item"><a class="page-link" href="' . _WEB_HOST_ROOT . '?module=users&action=list&page=' . $prevPage . '">Trước</a></li>';
                 }
+
+
                 ?>
 
-                <?php for ($index = 1; $index <= $maxPage; $index++) : ?>
+                <?php
+                $begin = $page - 2;
+                $end = $page + 2;
+                if ($begin < 1) {
+                    $begin = 1;
+                }
+                if ($end >= $maxPage) {
+                    $end = $maxPage;
+                }
+                for ($index = $begin; $index <= $end; $index++) : ?>
                     <li class="page-item <?php echo ($index == $page) ? 'active' : ''; ?>">
-                        <a class="page-link" href="<?php echo _WEB_HOST_ROOT.'?module=users&action=list&page=' . $index; ?>">
+                        <a class="page-link" href="<?php echo _WEB_HOST_ROOT . '?module=users'.$queryString.'&page=' . $index; ?>">
                             <?php echo $index; ?>
                         </a>
                     </li>
@@ -104,8 +192,9 @@ if (isLogin()) {
                 <?php
                 if ($page < $maxPage) {
                     $nextPage = $page + 1;
-                    echo '<li class="page-item"><a class="page-link" href="' . _WEB_HOST_ROOT. '?module=users&action=list&page=' . $nextPage . '">Sau</a></li>';
+                    echo '<li class="page-item"><a class="page-link" href="' . _WEB_HOST_ROOT . '?module=users'.$queryString.'&page='. $nextPage . '">Sau</a></li>';
                 }
+
                 ?>
             </ul>
         </nav>
