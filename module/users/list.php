@@ -3,11 +3,13 @@ if (!defined('_INCODE') == 1) {
     die('Access deined');
 }
 
-
+echo "davoa";
 
 if (!isLogin()) {
     redirect('?module=auth&action=login');
 }
+
+
 if (isLogin()) {
     $filter = '';
 
@@ -69,7 +71,7 @@ if (isLogin()) {
     $listAllUser = getRaw("SELECT * FROM user $filter ORDER BY createAt DESC LIMIT $offset, $perPage");
 
     layout('header');
-
+   
     $queryString = null;
 
     if (!empty($_SERVER['QUERY_STRING'])) {

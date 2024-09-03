@@ -25,6 +25,7 @@ function query($sql, $data = [])
             $query = $statement->execute($data);
         }
     } catch (Exception $exception) {
+        
         require_once 'module/error/database.php';
         die(); // Dừng thực thi nếu có lỗi
     }

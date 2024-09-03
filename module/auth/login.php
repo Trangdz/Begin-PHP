@@ -18,19 +18,19 @@ if (isPost()) {
     $body = getBody();
     $email=$body['email'];
     $password=$body['password'];
-    echo "hahah";
+ 
     if (!empty($email) && !empty($password)) {
         //Check login
-        echo "hahah0";
+      
        
         //Query take inform fllowing email
-        $userQuery = firstRaw("SELECT id, password FROM user WHERE email ='$email'");
+        $userQuery = firstRaw("SELECT id, password FROM user WHERE email ='$email' AND status=1");
 
-         var_dump($userQuery);
+        //  var_dump($userQuery);
         if (!empty($userQuery)) {
             $passwordHash = $userQuery['password'];
             $userId = $userQuery['id'];
-            echo "hahah1";
+          
             if (password_verify($password, $passwordHash)) {
                 //Create token login
                 $tokenLogin = sha1(uniqid() . time());
@@ -41,20 +41,21 @@ if (isPost()) {
                     'token' => $tokenLogin,
                     'createAt' => date('Y-m-d H:i:s')
                 ];
-                echo "hahah2";
+              
                 $insertTokenStatus = insert('login_token', $dataToken);
-                echo "Day la insert data :";
-                var_dump($insertTokenStatus);
+               
+                // var_dump($insertTokenStatus);
                 if ($insertTokenStatus) {
                     //Isert token success
 
                     //Save token_login into session
                     // setSession('loginToken', $tokenLogin);
                     $_SESSION['loginToken']=$tokenLogin;
+                    saveActivity();
                     //Redirection across manager page
                    redirect('?module=users&action=list');
-                   echo $_SESSION['loginToken'];
-                   echo "Da co session";
+                //    echo $_SESSION['loginToken'];
+                //    echo "Da co session";
                 } else {
                     setFlashData('msg', "Errors system , You can't login");
                     setFlashData('msg_type', 'danger');
@@ -64,14 +65,15 @@ if (isPost()) {
                 setFlashData('msg_type', 'danger');
             }
         } else {
-            setFlashData('msg', "Please , re-enter email and password");
+            setFlashData('msg', "Please , re-enter email and password or no yet activeted");
             setFlashData('msg_type', 'danger');
         }
     }
-     redirect('?module=users&action=login');
+     //redirect('?module=users&action=login');
 }
 
 layout('header-login', $data);
+
 $msg = getFlashData('msg');
 $msg_type = getFlashData('msg_type');
 ?>

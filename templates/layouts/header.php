@@ -1,10 +1,12 @@
 <?php
+
 if (defined('_INCODE') != 1) {
     die('Access Denied');
 }
-// ?ver=<?php echo rand() 
-// $body=getBody();
-// $loginToken=$body['loginToken'];
+autoRemoveTokenLogin();
+
+saveActivity();
+
 
 ?>
 <!DOCTYPE html>

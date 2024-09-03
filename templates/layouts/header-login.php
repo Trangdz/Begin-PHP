@@ -1,16 +1,20 @@
 <?php
+// autoRemoveToken();
  if (defined('_INCODE')!=1) {
     die('Access Denied');}
- 
+    // saveActivity();
 ?>
 
  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> <?php echo !empty($data['pageTitle'])?$data['pageTitle']:'Unicode'?></title>
-    <link text="text/css" rel="stylesheet" href="<?php echo _WEB_HOST_TEMPLATE;?>/css/bootrap.min.css"/>
-    <link text="text/css"  rel="stylesheet" href="<?php echo _WEB_HOST_TEMPLATE;?>/css/font-awesome.min.css">
-    <link text="text/css"  rel="stylesheet" href="<?php echo _WEB_HOST_TEMPLATE;?>/css/style.css?ver=<?php echo rand(); ?>">
+    <title><?php echo !empty($data['pageTitle']) ? $data['pageTitle'] : 'Unicode'; ?></title>
+    <link rel="stylesheet" href="templates/css/style.css?ver=<?php echo time(); ?>">
+    <link rel="stylesheet" href="module/users/style.css?ver=<?php echo time(); ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"/>
     <style>
         body {
             background-color: #f0f2f5;

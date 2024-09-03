@@ -1,5 +1,7 @@
 <?php
 // File này chứa các hằng số cấu hình
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+
 
 const _MODULE_DEFAULT = 'home';
 const _ACTION_DEFAULT = 'list';
