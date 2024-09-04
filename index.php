@@ -20,6 +20,10 @@ $action='_ACTION_DEFAULT';
       $module=trim($_GET['module']);
    }
  }
+ if (empty($_GET['module']))
+ {
+   $module='home';
+ }
  if (!empty($_GET['action']))
  {
    if(is_string($_GET['action'])){

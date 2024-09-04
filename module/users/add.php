@@ -162,7 +162,7 @@ $content = getFlashData('content');
         </div>
         <div class='button-submit'>
             <button class="btn btn-primary add-user" type="submit">Add User</button>
-            <a href='#' class='btn btn-success'>Back</a>
+            <a href='?module=users&action=list' class='btn btn-success'>Back</a>
         </div>
     </form>
 </div>

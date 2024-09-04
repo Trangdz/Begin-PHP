@@ -82,6 +82,28 @@
         input[type="text"], input[type="email"], input[type="password"] {
         width: 100%; /* Chiều rộng bằng 100% so với phần tử cha */
         max-width: 500px; /* Hoặc bạn có thể thiết lập một chiều rộng tối đa */
+    
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: grid;
+            grid-template-rows: 1fr auto;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+        }
+  
     }
     </style>
 </head>
